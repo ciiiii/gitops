@@ -1,0 +1,67 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sn-platform
+  namespace: argo
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  finalizers:
+  # The default behaviour is foreground cascading deletion
+  - resources-finalizer.argocd.argoproj.io
+operation:
+  initiatedBy:
+    automated: true
+  retry:
+    limit: 5
+  sync:
+    revision: master
+    syncOptions:
+    - CreateNamespace=true
+spec:
+  destination:
+    namespace: pulsar
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: charts/sn-platform
+    repoURL: https://github.com/streamnative/charts
+    targetRevision: master
+    helm:
+      values: |
+        auth:
+          vault:
+            enabled: false
+          authentication:
+            enabled: false
+            provider: ""
+          authorization:
+            enabled: false
+        components:
+          vault: false
+          streamnative_console: false
+        monitoring:
+          prometheus: false
+          grafana: false
+          node_exporter: false
+          alert_manager: false
+        zookeeper:
+          replicaCount: 1
+
+        bookkeeper:
+          replicaCount: 1
+
+        broker:
+          replicaCount: 1
+          configData:
+            managedLedgerDefaultEnsembleSize: "1"
+            managedLedgerDefaultWriteQuorum: "1"
+            managedLedgerDefaultAckQuorum: "1"
+
+        vault:
+          replicaCount: 1
+        ingress:
+          control_center:
+            enabled: false
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
