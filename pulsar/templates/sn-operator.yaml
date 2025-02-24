@@ -11,7 +11,7 @@ spec:
   destination:
     namespace: pulsar
     server: https://kubernetes.default.svc
-  project: default
+  project: {{ .Values.project }}
   source:
     chart: sn-operator
     repoURL: https://charts.streamnative.io
