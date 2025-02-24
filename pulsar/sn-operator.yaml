@@ -17,6 +17,7 @@ spec:
     repoURL: https://charts.streamnative.io
     targetRevision: v0.2.5
   syncPolicy:
+    automated: {}
     syncOptions:
     - CreateNamespace=true
     - ServerSideApply=true

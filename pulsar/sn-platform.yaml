@@ -8,15 +8,6 @@ metadata:
   finalizers:
   # The default behaviour is foreground cascading deletion
   - resources-finalizer.argocd.argoproj.io
-operation:
-  initiatedBy:
-    automated: true
-  retry:
-    limit: 5
-  sync:
-    revision: master
-    syncOptions:
-    - CreateNamespace=true
 spec:
   destination:
     namespace: pulsar
@@ -63,5 +54,6 @@ spec:
           control_center:
             enabled: false
   syncPolicy:
+    automated: {}
     syncOptions:
     - CreateNamespace=true
