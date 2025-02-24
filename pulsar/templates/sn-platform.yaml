@@ -35,6 +35,7 @@ spec:
           grafana: false
           node_exporter: false
           alert_manager: false
+          loki: true
         zookeeper:
           replicaCount: 1
 
